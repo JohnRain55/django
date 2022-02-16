@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 
 # Create your views here.
 
 
-def monday(request):
-    return HttpResponse("Jerk off")
-
-
-def tuesday(request):
-    return HttpResponse("Be slave")
+def get_info_about_day(request, day):
+    if day == "monday":
+        return HttpResponse("Jerk off")
+    elif day == "tuesday":
+        return HttpResponse("Be slave")
+    else:
+        return HttpResponseNotFound(f"Не знаю, что тебе делать в {day}")

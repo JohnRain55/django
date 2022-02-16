@@ -15,4 +15,3 @@ def get_info_about_sign_zodiac(request, sign_zodiac):
         return HttpResponse("Taurus bee my slave")
     else:
         return HttpResponseNotFound(f"Брат, я не ебу шо такое {sign_zodiac}")
-
