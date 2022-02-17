@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.urls import reverse
 
 # Create your views here.
 
@@ -24,12 +25,12 @@ def get_info_about_sign_zodiac_by_number(request, sign_zodiac: int):
     if sign_zodiac > len(zodiac_dict):
         return HttpResponseNotFound(f"This is no {sign_zodiac} in zodiac")
     name_zodiac = zodiacs[sign_zodiac - 1]
-    return HttpResponseRedirect(f'/horoscope/{name_zodiac}')
+    redirect_url = reverse('horoscope-name', args=(name_zodiac, ))
+    return HttpResponseRedirect(redirect_url)
 
 
 def get_info_about_sign_zodiac(request, sign_zodiac: str):
     description = zodiac_dict.get(sign_zodiac, None)
     if description:
         return HttpResponse(description)
-    else:
-        return HttpResponseNotFound(f"Брат, я не ебу шо такое {sign_zodiac}")
+    return HttpResponseNotFound(f"Брат, я не ебу шо такое {sign_zodiac}")
