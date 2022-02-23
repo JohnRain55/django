@@ -140,8 +140,8 @@ def get_type_zodiac(request):
     zodiac_types = ''
     for i in range(len(zodiac_values) - 1):
         if zodiac_values[i]['types'] not in zodiac_types:
-            # redirect_path = reverse('horoscope-name', args=[el[0]])
-            zodiac_types += f"<li> {zodiac_values[i]['types']} </li>"
+            redirect_path = reverse('horoscope-type', args=[zodiac_values[i]['types']])
+            zodiac_types += f"<li> <a href='{redirect_path}'>{zodiac_values[i]['types']} </a> </li>"
     response = f"""
         <ul>
             {zodiac_types}
@@ -157,6 +157,8 @@ def get_element_zodiac(request, element):
         if el[1].get('types') == element:
             redirect_path = reverse('horoscope-name', args=[el[0]])
             type_elements += f"<li> <a href='{redirect_path}'> {el[0].title()} </a> </li>"
+    if len(type_elements) < 1:
+        return HttpResponseNotFound(f'Нет такой стихии {element}')
     response = f"""
         <ul>
             {type_elements}
