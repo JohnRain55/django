@@ -140,10 +140,26 @@ def get_type_zodiac(request):
     zodiac_types = ''
     for i in range(len(zodiac_values) - 1):
         if zodiac_values[i]['types'] not in zodiac_types:
+            # redirect_path = reverse('horoscope-name', args=[el[0]])
             zodiac_types += f"<li> {zodiac_values[i]['types']} </li>"
     response = f"""
         <ul>
             {zodiac_types}
+        </ul>
+        """
+    return HttpResponse(response)
+
+
+def get_element_zodiac(request, element):
+    zodiac_elements = list(zodiac_dict.items())
+    type_elements = ''
+    for el in zodiac_elements:
+        if el[1].get('types') == element:
+            redirect_path = reverse('horoscope-name', args=[el[0]])
+            type_elements += f"<li> <a href='{redirect_path}'> {el[0].title()} </a> </li>"
+    response = f"""
+        <ul>
+            {type_elements}
         </ul>
         """
     return HttpResponse(response)
