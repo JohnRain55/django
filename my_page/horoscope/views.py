@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
 
@@ -9,7 +8,7 @@ zodiac_dict = {
         {'description': 'Овен - первый знак зодиака, планета Марс (с 21 марта по 20 апреля).',
          'types': 'fire',
          'day_start': 21,
-         'month_start': 3,
+         'month_start': [3, 31],
          'day_finish': 20,
          'month_finish': 4
          },
@@ -17,7 +16,7 @@ zodiac_dict = {
         {'description': 'Телец - второй знак зодиака, планета Венера (с 21 апреля по 21 мая).',
          'types': 'earth',
          'day_start': 21,
-         'month_start': 4,
+         'month_start': [4, 30],
          'day_finish': 21,
          'month_finish': 5
          },
@@ -25,7 +24,7 @@ zodiac_dict = {
         {'description': 'Близнецы - третий знак зодиака, планета Меркурий (с 22 мая по 21 июня).',
          'types': 'air',
          'day_start': 22,
-         'month_start': 5,
+         'month_start': [5, 31],
          'day_finish': 21,
          'month_finish': 6
          },
@@ -33,7 +32,7 @@ zodiac_dict = {
         {'description': 'Рак - четвёртый знак зодиака, Луна (с 22 июня по 22 июля).',
          'types': 'water',
          'day_start': 22,
-         'month_start': 6,
+         'month_start': [6, 30],
          'day_finish': 22,
          'month_finish': 7
          },
@@ -41,7 +40,7 @@ zodiac_dict = {
         {'description': 'Лев - пятый знак зодиака, солнце (с 23 июля по 21 августа).',
          'types': 'fire',
          'day_start': 23,
-         'month_start': 7,
+         'month_start': [7, 31],
          'day_finish': 21,
          'month_finish': 8
          },
@@ -49,7 +48,7 @@ zodiac_dict = {
         {'description': 'Дева - шестой знак зодиака, планета Меркурий (с 22 августа по 23 сентября).',
          'types': 'earth',
          'day_start': 22,
-         'month_start': 8,
+         'month_start': [8, 31],
          'day_finish': 23,
          'month_finish': 9
          },
@@ -57,7 +56,7 @@ zodiac_dict = {
         {'description': 'Весы - седьмой знак зодиака, планета Венера (с 24 сентября по 23 октября).',
          'types': 'air',
          'day_start': 24,
-         'month_start': 9,
+         'month_start': [9, 30],
          'day_finish': 23,
          'month_finish': 10
          },
@@ -65,7 +64,7 @@ zodiac_dict = {
         {'description': 'Скорпион - восьмой знак зодиака, планета Марс (с 24 октября по 22 ноября).',
          'types': 'water',
          'day_start': 24,
-         'month_start': 10,
+         'month_start': [10, 31],
          'day_finish': 22,
          'month_finish': 11
          },
@@ -73,7 +72,7 @@ zodiac_dict = {
         {'description': 'Стрелец - девятый знак зодиака, планета Юпитер (с 23 ноября по 22 декабря).',
          'types': 'fire',
          'day_start': 23,
-         'month_start': 11,
+         'month_start': [11, 30],
          'day_finish': 22,
          'month_finish': 12
          },
@@ -81,7 +80,7 @@ zodiac_dict = {
         {'description': 'Козерог - десятый знак зодиака, планета Сатурн (с 23 декабря по 20 января).',
          'types': 'earth',
          'day_start': 23,
-         'month_start': 12,
+         'month_start': [12, 31],
          'day_finish': 20,
          'month_finish': 1
          },
@@ -89,7 +88,7 @@ zodiac_dict = {
         {'description': 'Водолей - одиннадцатый знак зодиака, планеты Уран и Сатурн (с 21 января по 19 февраля).',
          'types': 'air',
          'day_start': 21,
-         'month_start': 1,
+         'month_start': [1, 31],
          'day_finish': 19,
          'month_finish': 2
          },
@@ -97,7 +96,7 @@ zodiac_dict = {
         {'description': 'Рыбы - двенадцатый знак зодиака, планеты Юпитер (с 20 февраля по 20 марта).',
          'types': 'water',
          'day_start': 20,
-         'month_start': 2,
+         'month_start': [2, 29],
          'day_finish': 20,
          'month_finish': 3
          }
@@ -150,13 +149,13 @@ def get_type_zodiac(request):
     return HttpResponse(response)
 
 
-def get_element_zodiac(request, element):
+def get_element_zodiac(request, element: str):
     zodiac_elements = list(zodiac_dict.items())
     type_elements = ''
-    for el in zodiac_elements:
-        if el[1].get('types') == element:
-            redirect_path = reverse('horoscope-name', args=[el[0]])
-            type_elements += f"<li> <a href='{redirect_path}'> {el[0].title()} </a> </li>"
+    for i in zodiac_elements:
+        if i[1].get('types') == element:
+            redirect_path = reverse('horoscope-name', args=[i[0]])
+            type_elements += f"<li> <a href='{redirect_path}'> {i[0].title()} </a> </li>"
     if len(type_elements) < 1:
         return HttpResponseNotFound(f'Нет такой стихии {element}')
     response = f"""
@@ -165,3 +164,17 @@ def get_element_zodiac(request, element):
         </ul>
         """
     return HttpResponse(response)
+
+
+def get_element_zodiac_by_date(request, month: int, day: int):
+    zodiac_elements = list(zodiac_dict.items())
+    zodiac = ''
+    for i in zodiac_elements:
+        if i[1].get('month_start')[0] == month and i[1].get('day_start') <= day <= i[1].get('month_start')[1]:
+            zodiac += i[0]
+        elif i[1].get('month_finish') == month and 1 <= day <= i[1].get('day_finish'):
+            zodiac += i[0]
+    if not zodiac:
+        return HttpResponseNotFound(f'Нет такой даты {month}.{day}')
+    redirect_url = reverse('horoscope-name', args=(zodiac,))
+    return HttpResponseRedirect(redirect_url)
