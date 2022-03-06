@@ -8,15 +8,18 @@ from math import pi
 
 
 def get_rectangle_area(request, width: int, height: int):
-    return HttpResponse(f'Rectangle rectangle {width}x{height} is {width * height} ')
+    return render(request, 'geometry/rectangle.html')
+    # return HttpResponse(f'Rectangle rectangle {width}x{height} is {width * height} ')
 
 
 def get_square_area(request, width: int):
-    return HttpResponse(f'Square square {width}x{width} is {width ** 2} ')
+    return render(request, 'geometry/square.html')
+    # return HttpResponse(f'Square square {width}x{width} is {width ** 2} ')
 
 
 def get_circle_area(request, radius: int):
-    return HttpResponse(f'Square circle radius {radius} is {pi * radius * radius} ')
+    return render(request, 'geometry/circle.html')
+    # return HttpResponse(f'Square circle radius {radius} is {pi * radius * radius} ')
 
 
 def get_figure_area(request, figure, width, height=None):
