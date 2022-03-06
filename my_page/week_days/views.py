@@ -22,5 +22,5 @@ def get_info_about_number(request, day: int):
 def get_info_about_day(request, day: str):
     description = day_dict.get(day, None)
     if description:
-        return HttpResponse(f'{description}')
+        return render(request, 'week_days/greeting.html')
     return HttpResponseNotFound(f"Не знаю, что тебе делать в {day}")
