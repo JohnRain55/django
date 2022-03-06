@@ -178,3 +178,15 @@ def get_element_zodiac_by_date(request, month: int, day: int):
         return HttpResponseNotFound(f'Нет такой даты {month}.{day}')
     redirect_url = reverse('horoscope-name', args=(zodiac,))
     return HttpResponseRedirect(redirect_url)
+
+
+def get_yyyy_converters(request, sign_zodiac):
+    return HttpResponse(f'Вы передали число из 4х цифр {sign_zodiac}')
+
+
+def get_my_float_converters(request, sign_zodiac):
+    return HttpResponse(f'Вы передали вещественное число {sign_zodiac}')
+
+
+def get_my_date_converters(request, sign_zodiac):
+    return HttpResponse(f'Вы передали дату {sign_zodiac}')
