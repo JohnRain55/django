@@ -199,6 +199,14 @@ def get_element_zodiac_by_date(request, month: int, day: int):
     return HttpResponseRedirect(redirect_url)
 
 
+def get_info_about_kianu(request):
+    data = {
+        'year_born': 1964,
+        'city_born': 'Бейрут',
+        'movie_name': 'На гребне волны',
+    }
+    return render(request, 'horoscope/kianu.html', context=data)
+
 def get_yyyy_converters(request, sign_zodiac):
     return HttpResponse(f'Вы передали число из 4х цифр {sign_zodiac}')
 
