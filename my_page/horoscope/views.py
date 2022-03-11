@@ -200,12 +200,22 @@ def get_element_zodiac_by_date(request, month: int, day: int):
 
 
 def get_info_about_kianu(request):
-    data = {
+    context = {
         'year_born': 1964,
         'city_born': 'Бейрут',
         'movie_name': 'На гребне волны',
     }
-    return render(request, 'horoscope/kianu.html', context=data)
+    return render(request, 'horoscope/kianu.html', context=context)
+
+
+def get_guinness_world_records(request):
+    context = {
+        'power_man': 'Narve Laeret',
+        'bar_name': 'Bob’s BBQ & Grill',
+        'count_needle': 1790,
+    }
+    return render(request, 'horoscope/guinnessworldrecords.html', context=context)
+
 
 def get_yyyy_converters(request, sign_zodiac):
     return HttpResponse(f'Вы передали число из 4х цифр {sign_zodiac}')
